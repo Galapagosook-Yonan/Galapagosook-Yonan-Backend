@@ -10,7 +10,7 @@ public class farmService {
 
     @Value("${google.maps.api-key}")
     private String apiKey;
-
+/**
     public String getLatLng(String address) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(apiKey)
@@ -27,5 +27,5 @@ public class farmService {
         } catch (Exception e) {
             return "Error fetching geocode: " + e.getMessage();
         }
-    }
+    }**/
 }
