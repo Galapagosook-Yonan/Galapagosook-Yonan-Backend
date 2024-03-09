@@ -78,7 +78,7 @@ public class farmEntity {
     // Enums should be defined accordingly
     public enum People {
         // Enum values here
-    }bran
+    }
 
     public enum Application {
         // Enum values here
