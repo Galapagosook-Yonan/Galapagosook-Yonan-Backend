@@ -1,5 +1,6 @@
 package GalapagosookYonan.GalapagosookYonan.farm;
 
+import GalapagosookYonan.GalapagosookYonan.entity.FarmEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
@@ -15,13 +16,13 @@ public class CsvFarmWriter implements ItemWriter<FarmDto> {
 
     @Override
     public void write(Chunk<? extends FarmDto> items) throws Exception {
-        List<Farm> scheduleList = new ArrayList<>();
+        List<FarmEntity> scheduleList = new ArrayList<>();
 
         items.forEach(getScheduleDto -> {
-            Farm schedule = getScheduleDto.toEntity();
+            FarmEntity schedule = getScheduleDto.toEntity();
             scheduleList.add(schedule);
         });
 
-        farmRepository.saveAll(scheduleList);
+//        farmRepository.saveAll(scheduleList);
     }
 }

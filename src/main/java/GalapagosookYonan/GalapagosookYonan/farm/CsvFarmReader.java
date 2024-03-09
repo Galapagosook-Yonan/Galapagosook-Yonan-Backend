@@ -1,4 +1,4 @@
 package GalapagosookYonan.GalapagosookYonan.farm;
 
-public class Farm {
+public class CsvFarmReader {
 }

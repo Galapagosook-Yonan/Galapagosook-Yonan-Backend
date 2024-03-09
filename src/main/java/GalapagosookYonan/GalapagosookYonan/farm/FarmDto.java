@@ -1,5 +1,6 @@
 package GalapagosookYonan.GalapagosookYonan.farm;
 
+import GalapagosookYonan.GalapagosookYonan.entity.FarmEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ public class FarmDto {
     @Enumerated(EnumType.STRING)
     private People people;
 
-    private String adress;
+    private String address;
     private String phone_number;
     private Long area_all;
     private Long area_sale;
@@ -24,38 +25,38 @@ public class FarmDto {
     @Enumerated(EnumType.STRING)
     private Application application;
 
-    private Long price;
+    private Long cost;
     private String amenities;
     private String date;
 
     @Builder
-    public FarmDto(String name, Type type, People people, String adress, String phone_number, Long area_all, Long area_sale, Application application, Long price, String amenities, String date) {
+    public FarmDto(String name, Type type, People people, String address, String phone_number, Long area_all, Long area_sale, Application application, Long cost, String amenities, String date) {
         this.name = name;
         this.type = type;
-        this.people = people;g
-        this.adress = adress;
+        this.people = people;
+        this.address = address;
         this.phone_number = phone_number;
         this.area_all = area_all;
         this.area_sale = area_sale;
         this.application = application;
-        this.price = price;
+        this.cost = cost;
         this.amenities = amenities;
         this.date = date;
     }
 
-//    public Farm toEntity() {
-//        return FarmDto.builder()
-//                .name(this.name)
-//                .type(this.type)
-//                .people(this.people)
-//                .adress(this.adress)
-//                .phone_number(this.phone_number)
-//                .area_all(this.area_all)
-//                .area_sale(this.area_sale)
-//                .application(this.application)
-//                .price(this.price)
-//                .amenities(this.amenities)
-//                .date(this.date)
-//                .build();
-//    }
+    public FarmEntity toEntity() {
+        return FarmEntity.builder()
+                .name(this.name)
+                .type(this.type)
+                .people(this.people)
+                .address(this.address)
+                .phoneNumber(this.phone_number)
+                .areaAll(this.area_all)
+                .areaSale(this.area_sale)
+                .application(this.application)
+                .cost(this.cost)
+                .amenities(this.amenities)
+                .date(this.date)
+                .build();
+    }
 }

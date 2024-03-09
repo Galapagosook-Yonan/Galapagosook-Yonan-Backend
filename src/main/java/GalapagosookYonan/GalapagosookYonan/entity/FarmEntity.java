@@ -1,30 +1,31 @@
 package GalapagosookYonan.GalapagosookYonan.entity;
 
+import GalapagosookYonan.GalapagosookYonan.farm.Application;
+import GalapagosookYonan.GalapagosookYonan.farm.People;
+import GalapagosookYonan.GalapagosookYonan.farm.Type;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 @Table(name = "farm")
-public class farmEntity {
+public class FarmEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer farmId;
+    private Long farmId;
 
-    @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @Column(nullable = false)
     private String address;
 
     @Column(name = "area_all", nullable = false)
-    private Integer areaAll;
+    private Long areaAll;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,26 +39,25 @@ public class farmEntity {
     private String amenities;
 
     @Column(nullable = false)
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(nullable = false)
-    private Integer areaSale;
+    private Long areaSale;
 
     @Column(nullable = false)
-    private Integer cost;
+    private Long cost;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date date;
+    private String date;
 
     @Column(nullable = false, length = 30)
     private String name;
 
     // Lombok will handle the creation of the builder with the following annotation
     @Builder
-    public farmEntity(Integer farmId, String type, String address, Integer areaAll,
+    public FarmEntity(Long farmId, Type type, String address, Long areaAll,
                       People people, Application application, String amenities,
-                      Integer phoneNumber, Integer areaSale, Integer cost, Date date, String name) {
+                      String phoneNumber, Long areaSale, Long cost, String date, String name) {
         this.farmId = farmId;
         this.type = type;
         this.address = address;
@@ -70,17 +70,5 @@ public class farmEntity {
         this.cost = cost;
         this.date = date;
         this.name = name;
-    }
-
-    // Default constructor is needed for JPA
-    public farmEntity() {}
-
-    // Enums should be defined accordingly
-    public enum People {
-        // Enum values here
-    }
-
-    public enum Application {
-        // Enum values here
     }
 }

@@ -1,50 +1,54 @@
 package GalapagosookYonan.GalapagosookYonan;
 
+import GalapagosookYonan.GalapagosookYonan.entity.FarmEntity;
 import GalapagosookYonan.GalapagosookYonan.farm.CsvFarmWriter;
 import GalapagosookYonan.GalapagosookYonan.farm.FarmDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableBatchProcessing
 public class FileReaderJobConfig {
+    private final int CHUNK_SIZE = 5;
 
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
     private final CsvReader csvReader;
     private final CsvFarmWriter csvFarmWriter;
     private static final int chunkSize = 1000; //데이터 처리할 row size
 
 
-    /**
-     * 학사일정 저장 Job
-     * Job은 여러 Step을 가질 수 있음
-     */
     @Bean
-    public Job csvScheduleJob(){
-        return jobBuilderFactory.get("csvScheduleJob")
-                .start(csvScheduleReaderStep())
+    public Job job(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new JobBuilder("job", jobRepository)
+                .start(step(jobRepository, transactionManager))
+                .build();
+    }
+
+    @Bean
+    public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new StepBuilder("step", jobRepository)
+                .tasklet(((contribution, chunkContext) -> {
+                    return RepeatStatus.FINISHED;
+                }), transactionManager).build();
+    }
+    @Bean
+    // reader 와 processor, writer 는 딱히 바뀐 게 없음
+    public Step testStep3(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new StepBuilder("testStep3", jobRepository)
+                .<FarmEntity, FarmEntity>chunk(CHUNK_SIZE, transactionManager)
                 .build();
     }
 
 
-    /**
-     * csv 파일 읽고 DB에 쓰는 Step
-     */
-    @Bean
-    public Step csvScheduleReaderStep(){
-        return stepBuilderFactory.get("csvScheduleReaderStep")
-                .<FarmDto, FarmDto>chunk(chunkSize)
-                .reader(csvReader.csvScheduleReader()) //추가
-                .writer(csvFarmWriter) //추가
-//                .allowStartIfComplete(true)
-                .build();
-    }
 
 
 }
