@@ -1,40 +1,54 @@
 package GalapagosookYonan.GalapagosookYonan.controller;
 import GalapagosookYonan.GalapagosookYonan.dto.gptRequestDto;
 import GalapagosookYonan.GalapagosookYonan.dto.gptResponseDto;
+import GalapagosookYonan.GalapagosookYonan.dto.ragRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper; // Import ObjectMapper
+import java.util.Map;
+import java.util.Objects;
 
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/gpt")
-@RequiredArgsConstructor
+@RequestMapping("/rag")
 public class ragController {
-    @Value("${gpt.model}")
-    private String model;
 
     @Value("${gpt.api.url}")
     private String apiUrl;
-    private final RestTemplate restTemplate;
 
-    @GetMapping("/chat")
-    public String chat(@RequestParam("prompt") String prompt){
+    @Autowired
+    private RestTemplate restTemplate;
 
-        gptRequestDto request = new gptRequestDto(
-                model,prompt,1,256,1,2,2);
+    @PostMapping("/query")
+    //public String query(@RequestBody String text, @RequestBody String prompt) {
+    public String query(String text, String prompt) {
 
-        gptResponseDto gptResponse = restTemplate.postForObject(
-                apiUrl
-                , request
-                , gptResponseDto.class
+        String requestBody = generatePrompt(text, prompt);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //headers.setBearerAuth(apiKey); // 이 부분은 gptConfig에서 이미 처리하므로 생략 가능
+
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<gptResponseDto> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.POST,
+                entity,
+                gptResponseDto.class
         );
 
-        return Objects.requireNonNull(gptResponse).getChoices().get(0).getMessage().getContent();
+        return Objects.requireNonNull(response.getBody()).getChoices().get(0).getMessage().getContent();
     }
 
+    private String generatePrompt(String text, String prompt) {
+        return text + "\n\n###\n\n" + prompt;
+    }
 }
+
