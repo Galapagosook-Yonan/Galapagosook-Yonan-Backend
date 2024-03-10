@@ -1,5 +1,9 @@
 package GalapagosookYonan.GalapagosookYonan.dto;
 
-public class farmAddressDto {
+import lombok.Getter;
 
+@Getter
+public class farmAddressDto {
+    private String latitude;
+    private String hardness;
 }
