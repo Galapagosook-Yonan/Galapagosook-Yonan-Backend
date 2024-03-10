@@ -16,49 +16,39 @@ public class FarmEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long farmId;
+    @Column(name = "farm_id")
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(nullable = false)
     private String address;
 
-    @Column(name = "area_all", nullable = false)
     private Long areaAll;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private People people;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Application application;
 
-    @Column(nullable = false, length = 100)
     private String amenities;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
     private Long areaSale;
 
-    @Column(nullable = false)
     private Long cost;
 
-    @Column(nullable = false)
     private String date;
 
-    @Column(nullable = false, length = 30)
     private String name;
 
-    // Lombok will handle the creation of the builder with the following annotation
     @Builder
-    public FarmEntity(Long farmId, Type type, String address, Long areaAll,
+    public FarmEntity(Long id, Type type, String address, Long areaAll,
                       People people, Application application, String amenities,
                       String phoneNumber, Long areaSale, Long cost, String date, String name) {
-        this.farmId = farmId;
+        this.id = id;
         this.type = type;
         this.address = address;
         this.areaAll = areaAll;
