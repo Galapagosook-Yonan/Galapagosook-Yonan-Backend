@@ -15,7 +15,6 @@ public class gptResponseDto {
 
     private List<Choice> choices;
 
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

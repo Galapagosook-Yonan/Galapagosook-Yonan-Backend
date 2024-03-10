@@ -36,24 +36,4 @@ public class farmController {
         return farm.get();
     }
 
-    /**@Autowired
-    public farmController(farmController farmRepository) {
-        this.farmRepository = farmRepository;
-    }
-
-    // Get all farms
-    @GetMapping("home/")
-    public List<farmEntity> getAllFarms() {
-        return farmRepository.findAll();
-    }
-
-    // Get a single farm by ID
-    @GetMapping("/{id}")
-    public farmEntity getFarmById(@PathVariable("id") Integer id) throws ResourceNotFoundException {
-        Optional<farmEntity> farm = farmRepository.findById(id);
-        if (farm.isEmpty()) {
-            throw new ResourceNotFoundException("Farm not found with id: " + id);
-        }
-        return farm.get();
-    }**/
 }
