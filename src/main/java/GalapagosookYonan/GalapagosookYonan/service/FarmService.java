@@ -1,19 +1,44 @@
 package GalapagosookYonan.GalapagosookYonan.service;
-
 import GalapagosookYonan.GalapagosookYonan.dto.PlanTermsDto;
 import GalapagosookYonan.GalapagosookYonan.farm.PlanRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FarmService {
+
+    @Value("${google.maps.api-key}")
+    private String apiKey;
+    /**
+     * public String getLatLng(String address) {
+     * GeoApiContext context = new GeoApiContext.Builder()
+     * .apiKey(apiKey)
+     * .build();
+     * <p>
+     * try {
+     * GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
+     * if (results.length > 0) {
+     * double lat = results[0].geometry.location.lat;
+     * double lng = results[0].geometry.location.lng;
+     * return String.format("Latitude: %s, Longitude: %s", lat, lng);
+     * }
+     * return "Address not found.";
+     * } catch (Exception e) {
+     * return "Error fetching geocode: " + e.getMessage();
+     * }
+     * }
+     **/
 
     public final PlanRepository planRepository;
     @Transactional
