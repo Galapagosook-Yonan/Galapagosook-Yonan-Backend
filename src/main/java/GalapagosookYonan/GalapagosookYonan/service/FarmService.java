@@ -33,13 +33,27 @@ public class FarmService {
                                     planTermsDto.setTitle(value);
                                     continue;
                                 case 1:
-                                    planTermsDto.setDescription(value);
+                                    if (value.length() > 50) {
+                                        // 500자 이상이면 ...으로 잘라내어 설정
+                                        planTermsDto.setDescription(value.substring(0, 50) + "...");
+                                    } else {
+                                        // 500자 이하이면 그대로 설정
+                                        planTermsDto.setDescription(value);
+                                    }
                                     continue;
                                 case 2:
-                                    planTermsDto.setDetails(value);
+                                    if (value.length() > 50) {
+                                        planTermsDto.setDetails(value.substring(0, 50) + "...");
+                                    } else {
+                                        planTermsDto.setDescription(value);
+                                    }
                                     continue;
                                 case 3:
-                                    planTermsDto.setImage_url(value);
+                                    if (value.length() > 50) {
+                                        planTermsDto.setImage_url(value.substring(0, 50) + "...");
+                                    } else {
+                                        planTermsDto.setDescription(value);
+                                    }
                             }
                         }
                         planRepository.save(planTermsDto.toEntity());
